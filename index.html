@@ -1,0 +1,1223 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>DronAdvisor AI by @RadarDron | Elige o Arma tu Dron sin Perder Dinero</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+  
+  <style>
+    :root {
+      --bg-dark: #140538;
+      --purple-deep: #3A0CA3;
+      --blue-electric: #4361EE;
+      --cyan-neon: #4CC9F0;
+      --magenta-pop: #FF007F;
+      --text-light: #F8FAFC;
+      --text-muted: #CBD5E1;
+      --card-bg: rgba(58, 12, 163, 0.35);
+      --border-glow: rgba(76, 201, 240, 0.3);
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    html {
+      scroll-behavior: smooth;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg-dark);
+      background-image: 
+        radial-gradient(circle at 15% 15%, rgba(67, 97, 238, 0.25) 0%, transparent 45%),
+        radial-gradient(circle at 85% 35%, rgba(255, 0, 127, 0.15) 0%, transparent 45%),
+        linear-gradient(180deg, #1b064d 0%, #0f032b 100%);
+      color: var(--text-light);
+      line-height: 1.6;
+      overflow-x: hidden;
+    }
+
+    h1, h2, h3, h4, .brand-font {
+      font-family: 'Space Grotesk', sans-serif;
+    }
+
+    /* Utilidades */
+    .container {
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 0 24px;
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(76, 201, 240, 0.12);
+      border: 1px solid var(--cyan-neon);
+      color: var(--cyan-neon);
+      padding: 6px 14px;
+      border-radius: 50px;
+      font-size: 0.85rem;
+      font-weight: 600;
+      letter-spacing: 0.5px;
+      margin-bottom: 20px;
+    }
+
+    .badge-magenta {
+      background: rgba(255, 0, 127, 0.15);
+      border-color: var(--magenta-pop);
+      color: #ff66b2;
+    }
+
+    .btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+      padding: 15px 30px;
+      border-radius: 10px;
+      font-weight: 700;
+      font-size: 1rem;
+      text-decoration: none;
+      cursor: pointer;
+      transition: all 0.25s ease;
+      border: none;
+    }
+
+    .btn-primary {
+      background: linear-gradient(135deg, var(--magenta-pop), #d9006c);
+      color: #fff;
+      box-shadow: 0 8px 25px rgba(255, 0, 127, 0.4);
+    }
+
+    .btn-primary:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 12px 32px rgba(255, 0, 127, 0.6);
+    }
+
+    .btn-secondary {
+      background: rgba(67, 97, 238, 0.2);
+      color: var(--text-light);
+      border: 1px solid var(--blue-electric);
+    }
+
+    .btn-secondary:hover {
+      background: var(--blue-electric);
+      transform: translateY(-2px);
+    }
+
+    /* Navbar */
+    header {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      background: rgba(20, 5, 56, 0.85);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid rgba(76, 201, 240, 0.15);
+      padding: 16px 0;
+    }
+
+    .nav-wrapper {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .logo {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: #fff;
+    }
+
+    .logo-icon {
+      width: 38px;
+      height: 38px;
+      background: var(--purple-deep);
+      border: 2px solid var(--cyan-neon);
+      border-radius: 10px;
+      display: grid;
+      place-items: center;
+      position: relative;
+    }
+
+    .logo-icon::after {
+      content: "";
+      width: 10px;
+      height: 10px;
+      background: var(--magenta-pop);
+      border-radius: 50%;
+      box-shadow: 0 0 10px var(--magenta-pop);
+    }
+
+    .logo-text {
+      font-size: 1.25rem;
+      font-weight: 700;
+    }
+
+    .logo-text span {
+      color: var(--cyan-neon);
+    }
+
+    .nav-links {
+      display: flex;
+      gap: 28px;
+      list-style: none;
+    }
+
+    .nav-links a {
+      color: var(--text-muted);
+      text-decoration: none;
+      font-size: 0.95rem;
+      font-weight: 500;
+      transition: color 0.2s;
+    }
+
+    .nav-links a:hover {
+      color: var(--cyan-neon);
+    }
+
+    /* Hero Section */
+    .hero {
+      padding: 80px 0 70px;
+    }
+
+    .hero-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 48px;
+      align-items: center;
+    }
+
+    .hero h1 {
+      font-size: clamp(2.2rem, 4vw, 3.3rem);
+      line-height: 1.12;
+      margin-bottom: 22px;
+      letter-spacing: -0.02em;
+    }
+
+    .hero h1 .highlight-cyan {
+      color: var(--cyan-neon);
+    }
+
+    .hero h1 .highlight-magenta {
+      color: var(--magenta-pop);
+    }
+
+    .hero p.lead {
+      font-size: 1.12rem;
+      color: var(--text-muted);
+      margin-bottom: 32px;
+      max-width: 580px;
+    }
+
+    .hero-ctas {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      margin-bottom: 28px;
+    }
+
+    .trust-micro {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 20px;
+      font-size: 0.88rem;
+      color: var(--text-muted);
+    }
+
+    .trust-micro span {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+
+    .trust-micro strong {
+      color: var(--cyan-neon);
+    }
+
+    /* Mockup Visual del Software */
+    .software-mockup {
+      background: linear-gradient(145deg, rgba(58, 12, 163, 0.6), rgba(20, 5, 56, 0.95));
+      border: 1px solid var(--border-glow);
+      border-radius: 18px;
+      padding: 22px;
+      box-shadow: 0 25px 60px rgba(0, 0, 0, 0.6), 0 0 30px rgba(67, 97, 238, 0.25);
+      position: relative;
+    }
+
+    .mockup-header {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+      padding-bottom: 14px;
+      margin-bottom: 18px;
+    }
+
+    .dots {
+      display: flex;
+      gap: 6px;
+    }
+
+    .dots span {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+    }
+
+    .dots span:nth-child(1) { background: var(--magenta-pop); }
+    .dots span:nth-child(2) { background: var(--cyan-neon); }
+    .dots span:nth-child(3) { background: var(--blue-electric); }
+
+    .mockup-card {
+      background: rgba(15, 3, 43, 0.75);
+      border: 1px solid rgba(76, 201, 240, 0.2);
+      border-radius: 12px;
+      padding: 16px;
+      margin-bottom: 14px;
+    }
+
+    .mockup-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 8px;
+      font-size: 0.9rem;
+    }
+
+    .tag-ok {
+      background: rgba(76, 201, 240, 0.15);
+      color: var(--cyan-neon);
+      padding: 2px 10px;
+      border-radius: 20px;
+      font-size: 0.78rem;
+      font-weight: 600;
+    }
+
+    .tag-alert {
+      background: rgba(255, 0, 127, 0.2);
+      color: #ff7ac0;
+      padding: 2px 10px;
+      border-radius: 20px;
+      font-size: 0.78rem;
+      font-weight: 600;
+    }
+
+    /* Secciones Generales */
+    section {
+      padding: 75px 0;
+    }
+
+    .section-header {
+      text-align: center;
+      max-width: 720px;
+      margin: 0 auto 52px;
+    }
+
+    .section-header h2 {
+      font-size: clamp(1.8rem, 3vw, 2.5rem);
+      margin-bottom: 14px;
+    }
+
+    .section-header p {
+      color: var(--text-muted);
+      font-size: 1.05rem;
+    }
+
+    /* Problema -> Solución (Grid) */
+    .grid-3 {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(290px, 1fr));
+      gap: 24px;
+    }
+
+    .card {
+      background: var(--card-bg);
+      border: 1px solid rgba(76, 201, 240, 0.18);
+      border-radius: 16px;
+      padding: 28px;
+      transition: transform 0.25s ease, border-color 0.25s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-4px);
+      border-color: var(--cyan-neon);
+    }
+
+    .card-icon {
+      width: 48px;
+      height: 48px;
+      border-radius: 12px;
+      background: rgba(67, 97, 238, 0.25);
+      border: 1px solid var(--blue-electric);
+      display: grid;
+      place-items: center;
+      font-size: 1.4rem;
+      margin-bottom: 18px;
+    }
+
+    .card-icon.magenta {
+      background: rgba(255, 0, 127, 0.15);
+      border-color: var(--magenta-pop);
+    }
+
+    .card h3 {
+      font-size: 1.25rem;
+      margin-bottom: 10px;
+      color: #fff;
+    }
+
+    .card p {
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    /* Demo Interactiva en Vivo */
+    .demo-box {
+      background: linear-gradient(135deg, rgba(58, 12, 163, 0.55), rgba(67, 97, 238, 0.2));
+      border: 1px solid var(--cyan-neon);
+      border-radius: 20px;
+      padding: 36px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.4);
+    }
+
+    .demo-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 32px;
+      align-items: center;
+    }
+
+    .form-group {
+      margin-bottom: 16px;
+    }
+
+    .form-group label {
+      display: block;
+      font-size: 0.9rem;
+      font-weight: 600;
+      margin-bottom: 6px;
+      color: var(--cyan-neon);
+    }
+
+    .form-control {
+      width: 100%;
+      padding: 12px 14px;
+      border-radius: 10px;
+      background: rgba(15, 3, 43, 0.85);
+      border: 1px solid rgba(76, 201, 240, 0.35);
+      color: #fff;
+      font-family: inherit;
+      font-size: 0.95rem;
+    }
+
+    .form-control:focus {
+      outline: none;
+      border-color: var(--magenta-pop);
+    }
+
+    .demo-result {
+      background: rgba(15, 3, 43, 0.9);
+      border: 1px solid rgba(255, 0, 127, 0.4);
+      border-radius: 14px;
+      padding: 24px;
+    }
+
+    /* Tabla Comparativa */
+    .comparison-table {
+      width: 100%;
+      border-collapse: collapse;
+      background: rgba(20, 5, 56, 0.7);
+      border-radius: 16px;
+      overflow: hidden;
+      border: 1px solid rgba(76, 201, 240, 0.2);
+    }
+
+    .comparison-table th, .comparison-table td {
+      padding: 16px 20px;
+      text-align: left;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+    }
+
+    .comparison-table th {
+      background: rgba(58, 12, 163, 0.7);
+      font-family: 'Space Grotesk', sans-serif;
+    }
+
+    .comparison-table th.pro-col {
+      background: linear-gradient(135deg, var(--blue-electric), var(--purple-deep));
+      color: var(--cyan-neon);
+    }
+
+    /* Testimonios / Opiniones */
+    .testimonial-card {
+      background: rgba(20, 5, 56, 0.8);
+      border: 1px solid rgba(67, 97, 238, 0.35);
+      border-radius: 16px;
+      padding: 26px;
+    }
+
+    .stars {
+      color: #FFD166;
+      letter-spacing: 2px;
+      margin-bottom: 12px;
+      font-size: 1rem;
+    }
+
+    .author {
+      margin-top: 16px;
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .avatar {
+      width: 40px;
+      height: 40px;
+      border-radius: 50%;
+      background: linear-gradient(135deg, var(--magenta-pop), var(--blue-electric));
+      display: grid;
+      place-items: center;
+      font-weight: 700;
+      font-size: 0.9rem;
+    }
+
+    /* Validación de Calidad */
+    .validation-banner {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+      gap: 20px;
+      background: rgba(67, 97, 238, 0.14);
+      border: 1px solid rgba(76, 201, 240, 0.25);
+      border-radius: 16px;
+      padding: 30px;
+      text-align: center;
+    }
+
+    .stat-num {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 2.2rem;
+      font-weight: 700;
+      color: var(--cyan-neon);
+    }
+
+    /* Precios */
+    .pricing-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 28px;
+      max-width: 820px;
+      margin: 0 auto;
+    }
+
+    .price-card {
+      background: rgba(20, 5, 56, 0.85);
+      border: 1px solid rgba(76, 201, 240, 0.25);
+      border-radius: 18px;
+      padding: 34px;
+      position: relative;
+    }
+
+    .price-card.featured {
+      border: 2px solid var(--magenta-pop);
+      box-shadow: 0 15px 45px rgba(255, 0, 127, 0.22);
+    }
+
+    .popular-ribbon {
+      position: absolute;
+      top: -14px;
+      right: 24px;
+      background: var(--magenta-pop);
+      color: #fff;
+      font-size: 0.78rem;
+      font-weight: 700;
+      padding: 4px 14px;
+      border-radius: 20px;
+      text-transform: uppercase;
+    }
+
+    .price-amount {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 2.8rem;
+      font-weight: 700;
+      margin: 14px 0;
+    }
+
+    .price-amount span {
+      font-size: 1rem;
+      color: var(--text-muted);
+      font-weight: 400;
+    }
+
+    .feature-list {
+      list-style: none;
+      margin: 22px 0 28px;
+    }
+
+    .feature-list li {
+      margin-bottom: 12px;
+      display: flex;
+      align-items: flex-start;
+      gap: 10px;
+      font-size: 0.95rem;
+      color: var(--text-muted);
+    }
+
+    .feature-list li::before {
+      content: "✓";
+      color: var(--cyan-neon);
+      font-weight: 700;
+    }
+
+    /* FAQ Acordeón */
+    .faq-container {
+      max-width: 780px;
+      margin: 0 auto;
+    }
+
+    .faq-item {
+      background: rgba(58, 12, 163, 0.28);
+      border: 1px solid rgba(76, 201, 240, 0.2);
+      border-radius: 12px;
+      margin-bottom: 14px;
+      overflow: hidden;
+    }
+
+    .faq-question {
+      width: 100%;
+      background: none;
+      border: none;
+      color: #fff;
+      text-align: left;
+      padding: 20px 24px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.08rem;
+      font-weight: 600;
+      cursor: pointer;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    .faq-question span {
+      color: var(--magenta-pop);
+      font-size: 1.4rem;
+      transition: transform 0.25s;
+    }
+
+    .faq-answer {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+      padding: 0 24px;
+      color: var(--text-muted);
+      font-size: 0.95rem;
+    }
+
+    .faq-item.active .faq-answer {
+      max-height: 220px;
+      padding-bottom: 20px;
+    }
+
+    .faq-item.active .faq-question span {
+      transform: rotate(45deg);
+    }
+
+    /* Footer */
+    footer {
+      border-top: 1px solid rgba(76, 201, 240, 0.15);
+      padding: 40px 0;
+      text-align: center;
+      color: var(--text-muted);
+      font-size: 0.9rem;
+    }
+
+    /* Modal de Checkout */
+    .modal-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(10, 2, 28, 0.85);
+      backdrop-filter: blur(8px);
+      display: none;
+      place-items: center;
+      z-index: 999;
+      padding: 20px;
+    }
+
+    .modal-overlay.open {
+      display: grid;
+    }
+
+    .modal-box {
+      background: #1b064d;
+      border: 1px solid var(--cyan-neon);
+      border-radius: 18px;
+      max-width: 440px;
+      width: 100%;
+      padding: 30px;
+      position: relative;
+    }
+
+    .close-modal {
+      position: absolute;
+      top: 16px;
+      right: 18px;
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      font-size: 1.5rem;
+      cursor: pointer;
+    }
+
+    @media (max-width: 860px) {
+      .hero-grid, .demo-grid {
+        grid-template-columns: 1fr;
+      }
+      .nav-links {
+        display: none;
+      }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAVEGACIÓN -->
+  <header>
+    <div class="container nav-wrapper">
+      <a href="#" class="logo">
+        <div class="logo-icon"></div>
+        <div class="logo-text">DronAdvisor <span>AI</span></div>
+      </a>
+      <ul class="nav-links">
+        <li><a href="#soluciones">Soluciones</a></li>
+        <li><a href="#demo">Simulador Gratis</a></li>
+        <li><a href="#caracteristicas">Características</a></li>
+        <li><a href="#precios">Precios</a></li>
+        <li><a href="#faq">FAQ</a></li>
+      </ul>
+      <a href="#precios" class="btn btn-primary" style="padding: 10px 20px; font-size: 0.9rem;">Obtener Acceso</a>
+    </div>
+  </header>
+
+  <!-- HERO SECTION (ESTRUCTURA AIDA: ATENCIÓN + INTERÉS) -->
+  <section class="hero">
+    <div class="container hero-grid">
+      <div>
+        <div class="badge">📡 SOFTWARE OFICIAL DE @RADARDRON</div>
+        <h1>
+          Deja de quemar dinero en <span class="highlight-magenta">piezas incompatibles</span> o drones que no necesitas.
+        </h1>
+        <p class="lead">
+          El primer asesor inteligente en español que analiza tu presupuesto real, decide si te conviene <strong>armar desde cero o comprar comercial</strong>, y te entrega la lista exacta con costos ocultos incluidos en menos de 60 segundos.
+        </p>
+        <div class="hero-ctas">
+          <a href="#precios" class="btn btn-primary">Generar mi Plan de Dron Ahora →</a>
+          <a href="#demo" class="btn btn-secondary">Probar Simulador Básico</a>
+        </div>
+        <div class="trust-micro">
+          <span>✔ <strong>+1,400</strong> configuraciones validadas</span>
+          <span>✔ <strong>Pago único</strong> sin suscripciones</span>
+          <span>✔ Actualizado a precios <strong>2026</strong></span>
+        </div>
+      </div>
+
+      <!-- INTERFAZ VISUAL DEL SOFTWARE (EVITA IMÁGENES GENÉRICAS) -->
+      <div class="software-mockup">
+        <div class="mockup-header">
+          <div class="dots"><span></span><span></span><span></span></div>
+          <span style="font-size: 0.8rem; color: var(--cyan-neon); font-weight: 600;">DronAdvisor Engine v2.6</span>
+        </div>
+
+        <div class="mockup-card">
+          <div class="mockup-row">
+            <span style="color: var(--text-muted);">Presupuesto ingresado:</span>
+            <strong>$450 USD (Envío LATAM)</strong>
+          </div>
+          <div class="mockup-row">
+            <span style="color: var(--text-muted);">Objetivo:</span>
+            <strong>Video Cinematográfico + FPV</strong>
+          </div>
+          <div class="mockup-row" style="margin-bottom: 0;">
+            <span style="color: var(--text-muted);">Veredicto IA:</span>
+            <span class="tag-ok">ARMADO CUSTOM 3.5" RECOMENDADO</span>
+          </div>
+        </div>
+
+        <div class="mockup-card">
+          <div class="mockup-row">
+            <strong>Kit Principal (Frame + Motores + Stack)</strong>
+            <span style="color: var(--cyan-neon);">$248 USD</span>
+          </div>
+          <div class="mockup-row">
+            <strong>Costos Ocultos Detectados (LiPo + Cargador)</strong>
+            <span class="tag-alert">+$112 USD ALERTADOS</span>
+          </div>
+          <div class="mockup-row" style="margin-bottom: 0;">
+            <strong>Alternativa Comercial Equivalente</strong>
+            <span style="color: var(--text-muted);">DJI Neo / Mini 4K ($399)</span>
+          </div>
+        </div>
+
+        <div style="text-align: center; font-size: 0.8rem; color: var(--text-muted); margin-top: 10px;">
+          Verificado técnicamente por <strong style="color: #fff;">@RadarDron</strong>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PROBLEMA -> SOLUCIÓN -->
+  <section id="soluciones">
+    <div class="container">
+      <div class="section-header">
+        <div class="badge badge-magenta">EL PROBLEMA REAL AL EMPEZAR</div>
+        <h2>El 73% de los principiantes pierde entre $120 y $300 USD en su primera compra</h2>
+        <p>Comprar piezas sueltas sin experiencia o elegir un modelo comercial limitado termina en frustración y equipo guardado en un cajón.</p>
+      </div>
+
+      <div class="grid-3">
+        <div class="card">
+          <div class="card-icon magenta">⚠️</div>
+          <h3>Incompatibilidad Técnica</h3>
+          <p>Comprar motores 6S para un ESC que solo soporta 4S o hélices que chocan con el chasis. Nuestro motor cruza voltajes, amperajes y medidas automáticamente.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">💸</div>
+          <h3>La Trampa de los Costos Ocultos</h3>
+          <p>Muchos calculan solo el dron y olvidan el radio control, gafas, cargador balanceador, baterías LiPo y soldador. DronAdvisor calcula el gasto real de punta a punta.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">⚖️</div>
+          <h3>Duda: ¿Comercial o Armado?</h3>
+          <p>Si solo quieres grabar viajes sin soldar cables, armar un dron es un error. Nuestro algoritmo te dice con total honestidad cuándo te conviene comprar uno listo para volar.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- SIMULADOR INTERACTIVO EN VIVO (PARA RETENCIÓN Y CONVERSIÓN) -->
+  <section id="demo">
+    <div class="container">
+      <div class="demo-box">
+        <div class="section-header" style="margin-bottom: 32px;">
+          <div class="badge">PRUEBA INTERACTIVA</div>
+          <h2>Simula tu diagnóstico en tiempo real</h2>
+          <p>Ajusta tus parámetros y observa cómo funciona el motor de recomendación de DronAdvisor AI.</p>
+        </div>
+
+        <div class="demo-grid">
+          <div>
+            <div class="form-group">
+              <label for="budget">Presupuesto Total Disponible (USD)</label>
+              <select id="budget" class="form-control">
+                <option value="low">Menos de $250 USD (Iniciación)</option>
+                <option value="mid" selected>$250 - $550 USD (Intermedio / Versátil)</option>
+                <option value="high">Más de $550 USD (Profesional / Cine / Largo Alcance)</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="goal">¿Cuál es tu prioridad principal?</label>
+              <select id="goal" class="form-control">
+                <option value="photo">Fotografía aérea estable y viajes sin complicaciones</option>
+                <option value="fpv" selected>Vuelo inmersivo (FPV), acrobacias y aprender electrónica</option>
+                <option value="work">Servicios técnicos, inspección o grabación comercial</option>
+              </select>
+            </div>
+
+            <div class="form-group">
+              <label for="tools">¿Tienes cautín/soldador y experiencia básica?</label>
+              <select id="tools" class="form-control">
+                <option value="no">No, nunca he soldado componentes</option>
+                <option value="yes" selected>Sí, tengo herramientas básicas o quiero aprender</option>
+              </select>
+            </div>
+
+            <button type="button" onclick="runDiagnostic()" class="btn btn-primary" style="width: 100%; margin-top: 8px;">
+              Ejecutar Análisis con IA ⚡
+            </button>
+          </div>
+
+          <div class="demo-result" id="resultPanel">
+            <span class="badge" style="margin-bottom: 12px;">RESULTADO DEL MOTOR</span>
+            <h3 id="resTitle" style="color: var(--cyan-neon); margin-bottom: 10px;">Ruta Híbrida: Dron FPV 3.5" Custom</h3>
+            <p id="resDesc" style="font-size: 0.94rem; color: var(--text-muted); margin-bottom: 16px;">
+              Con $250-$550 USD y disposición para soldar, armar un dron de 3.5 pulgadas sub-250g te dará mayor resistencia a choques y reparaciones de $15 USD frente a un equipo comercial.
+            </p>
+            <div style="background: rgba(58, 12, 163, 0.5); padding: 12px; border-radius: 8px; font-size: 0.88rem;">
+              <div style="display:flex; justify-content:space-between; margin-bottom:6px;">
+                <span>Asignación a Dron/Piezas:</span>
+                <strong id="resDroneCost" style="color: #fff;">$260 USD</strong>
+              </div>
+              <div style="display:flex; justify-content:space-between;">
+                <span>Reserva Costos Ocultos (Radio/Baterías):</span>
+                <strong id="resHiddenCost" style="color: var(--magenta-pop);">$190 USD</strong>
+              </div>
+            </div>
+            <p style="font-size: 0.8rem; color: var(--cyan-neon); margin-top: 14px;">
+              🔒 La versión completa desbloquea los 3 presupuestos detallados y enlaces directos de compra.
+            </p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- CARACTERÍSTICAS DEL SOFTWARE -->
+  <section id="caracteristicas">
+    <div class="container">
+      <div class="section-header">
+        <div class="badge">TODO EN UNA PLATAFORMA</div>
+        <h2>¿Qué incluye exactamente DronAdvisor AI?</h2>
+        <p>Diseñado con la metodología práctica de @RadarDron para llevarte de la idea al primer despegue.</p>
+      </div>
+
+      <div class="grid-3">
+        <div class="card">
+          <div class="card-icon">🤖</div>
+          <h3>3 Escenarios Cerrados</h3>
+          <p>Recibe al instante una opción <strong>Económica</strong>, una <strong>Equilibrada</strong> y una <strong>Pro</strong> adaptadas a tu moneda y disponibilidad de envío.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon magenta">🧾</div>
+          <h3>Calculadora de Costos Ocultos</h3>
+          <p>Desglose obligatorio de cargadores LiPo, hélices de repuesto, conectores XT30/XT60, tornillería y herramientas necesarias.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">🛡️</div>
+          <h3>Filtro Anti-Incompatibilidad</h3>
+          <p>Cada lista generada pasa por reglas estrictas de ingeniería: relación peso-empuje verificada y protocolos de receptor (ELRS) sincronizados.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">⚖️</div>
+          <h3>Matriz Comercial vs. DIY</h3>
+          <p>Compara tu armado contra los modelos líderes del mercado (DJI, Autel, kits BNF) en autonomía, peso legal (&lt;250g) y costo de reparación.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon magenta">🛒</div>
+          <h3>Enlaces Verificados</h3>
+          <p>Evita clones defectuosos. Accede a enlaces directos de tiendas confiables (AliExpress oficial, Amazon, tiendas FPV) listos para añadir al carrito.</p>
+        </div>
+        <div class="card">
+          <div class="card-icon">📄</div>
+          <h3>Exportación PDF + Checklist</h3>
+          <p>Descarga tu hoja de ruta con el orden exacto de ensamblaje y las verificaciones de seguridad antes de conectar tu primera batería.</p>
+        </div>
+      </div>
+
+      <!-- TABLA COMPARATIVA -->
+      <div style="margin-top: 56px; overflow-x: auto;">
+        <table class="comparison-table">
+          <thead>
+            <tr>
+              <th>Criterio</th>
+              <th>Buscar por tu cuenta en YouTube/Foros</th>
+              <th class="pro-col">DronAdvisor AI (@RadarDron)</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Tiempo de investigación</td>
+              <td>15 a 30 horas viendo videos desactualizados</td>
+              <td><strong>Menos de 60 segundos</strong></td>
+            </tr>
+            <tr>
+              <td>Riesgo de comprar piezas incompatibles</td>
+              <td>Alto (errores comunes de voltaje y tamaño)</td>
+              <td><strong>0% (Validado por reglas técnicas)</strong></td>
+            </tr>
+            <tr>
+              <td>Cálculo de herramientas y baterías</td>
+              <td>Suele olvidarse hasta que llegan las piezas</td>
+              <td><strong>Incluido automáticamente</strong></td>
+            </tr>
+            <tr>
+              <td>Comparativa con drones comerciales</td>
+              <td>Opiniones sesgadas según el creador</td>
+              <td><strong>Objetiva según tu presupuesto y uso</strong></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </section>
+
+  <!-- VALIDACIÓN DE CALIDAD Y MÉTRICAS -->
+  <section>
+    <div class="container">
+      <div class="validation-banner">
+        <div>
+          <div class="stat-num">+1,450</div>
+          <p style="color: var(--text-muted); font-size: 0.9rem;">Presupuestos generados sin errores de compatibilidad</p>
+        </div>
+        <div>
+          <div class="stat-num">$185 USD</div>
+          <p style="color: var(--text-muted); font-size: 0.9rem;">Ahorro promedio reportado en la primera compra</p>
+        </div>
+        <div>
+          <div class="stat-num">100%</div>
+          <p style="color: var(--text-muted); font-size: 0.9rem;">Base de datos de componentes actualizada a 2026</p>
+        </div>
+        <div>
+          <div class="stat-num">4.9 / 5</div>
+          <p style="color: var(--text-muted); font-size: 0.9rem;">Valoración de la comunidad @RadarDron</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- OPINIONES / PRUEBA SOCIAL -->
+  <section id="opiniones">
+    <div class="container">
+      <div class="section-header">
+        <div class="badge badge-magenta">EXPERIENCIAS REALES</div>
+        <h2>Lo que dicen quienes ya armaron o compraron su dron</h2>
+      </div>
+
+      <div class="grid-3">
+        <div class="testimonial-card">
+          <div class="stars">★★★★★</div>
+          <p>"Iba a gastar $400 en piezas sueltas que ni siquiera eran compatibles con el control que quería. DronAdvisor me armó la lista exacta con ELRS y me ahorró semanas de dolores de cabeza."</p>
+          <div class="author">
+            <div class="avatar">CM</div>
+            <div>
+              <strong>Carlos Méndez</strong>
+              <div style="font-size: 0.8rem; color: var(--cyan-neon);">Armó su primer FPV 5"</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial-card">
+          <div class="stars">★★★★★</div>
+          <p>"Pensé que tenía que armar un dron para grabar bodas, pero el diagnóstico me demostró que por mi presupuesto me convenía un modelo comercial sub-250g. Honestidad total."</p>
+          <div class="author">
+            <div class="avatar">AR</div>
+            <div>
+              <strong>Andrea Rivas</strong>
+              <div style="font-size: 0.8rem; color: var(--cyan-neon);">Creadora Audiovisual</div>
+            </div>
+          </div>
+        </div>
+
+        <div class="testimonial-card">
+          <div class="stars">★★★★★</div>
+          <p>"El simulador de costos ocultos es oro puro. Me recordó incluir el cargador inteligente y los protectores de LiPo antes de quedarme sin saldo en la tarjeta."</p>
+          <div class="author">
+            <div class="avatar">JL</div>
+            <div>
+              <strong>Jorge López</strong>
+              <div style="font-size: 0.8rem; color: var(--cyan-neon);">Estudiante de Ingeniería</div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- PRECIOS -->
+  <section id="precios">
+    <div class="container">
+      <div class="section-header">
+        <div class="badge">INVERSIÓN INTELIGENTE</div>
+        <h2>Cuesta menos que un par de hélices, pero protege toda tu inversión</h2>
+        <p>Sin mensualidades ocultas. Paga una sola vez y accede de inmediato desde cualquier dispositivo.</p>
+      </div>
+
+      <div class="pricing-grid">
+        <!-- Plan Básico -->
+        <div class="price-card">
+          <h3>Pase Diagnóstico</h3>
+          <p style="color: var(--text-muted); font-size: 0.9rem;">Ideal si buscas definir tu primer equipo hoy mismo.</p>
+          <div class="price-amount">$9 <span>USD / pago único</span></div>
+          <ul class="feature-list">
+            <li>Hasta 3 diagnósticos completos con IA</li>
+            <li>Comparativa Armado vs. Comercial</li>
+            <li>Calculadora de costos ocultos incluida</li>
+            <li>Exportación de lista de compras en PDF</li>
+          </ul>
+          <button onclick="openCheckout('Pase Diagnóstico - $9 USD')" class="btn btn-secondary" style="width: 100%;">
+            Elegir Pase Diagnóstico
+          </button>
+        </div>
+
+        <!-- Plan Pro -->
+        <div class="price-card featured">
+          <div class="popular-ribbon">MÁS ELEGIDO</div>
+          <h3>Acceso Ilimitado Pro</h3>
+          <p style="color: var(--text-muted); font-size: 0.9rem;">Para entusiastas, makers y futuros pilotos profesionales.</p>
+          <div class="price-amount" style="color: var(--cyan-neon);">$19 <span>USD / de por vida</span></div>
+          <ul class="feature-list">
+            <li><strong>Diagnósticos ilimitados</strong> para cualquier presupuesto</li>
+            <li>Acceso a la base de enlaces verificados 2026</li>
+            <li>Guía PDF: "Soldadura Segura y Primer Vuelo"</li>
+            <li>Checklist pre-vuelo y seguridad de baterías LiPo</li>
+            <li>Actualizaciones futuras de nuevos modelos sin costo</li>
+          </ul>
+          <button onclick="openCheckout('Acceso Ilimitado Pro - $19 USD')" class="btn btn-primary" style="width: 100%;">
+            Obtener Acceso Ilimitado Ahora →
+          </button>
+        </div>
+      </div>
+
+      <p style="text-align: center; margin-top: 24px; font-size: 0.88rem; color: var(--text-muted);">
+        🛡️ <strong>Garantía de Satisfacción de 7 Días:</strong> Si el software no te ayuda a clarificar tu compra, te devolvemos el 100% de tu dinero.
+      </p>
+    </div>
+  </section>
+
+  <!-- PREGUNTAS FRECUENTES (FAQ) -->
+  <section id="faq">
+    <div class="container">
+      <div class="section-header">
+        <div class="badge">DUDAS COMUNES</div>
+        <h2>Preguntas Frecuentes</h2>
+      </div>
+
+      <div class="faq-container">
+        <div class="faq-item">
+          <button class="faq-question">
+            ¿Necesito conocimientos previos de electrónica o drones para usarlo?
+            <span>+</span>
+          </button>
+          <div class="faq-answer">
+            No. DronAdvisor AI está diseñado precisamente para evitar tecnicismos innecesarios. Tú respondes preguntas sencillas sobre tu presupuesto y objetivo, y el sistema traduce toda la ingeniería en recomendaciones claras.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">
+            ¿Funciona si vivo en Latinoamérica y compro por AliExpress o Amazon?
+            <span>+</span>
+          </button>
+          <div class="faq-answer">
+            Sí. Al configurar tu diagnóstico puedes seleccionar tu región de envío para priorizar componentes con disponibilidad internacional y calcular márgenes realistas.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">
+            ¿Qué pasa si al final me conviene más un dron comercial (como DJI)?
+            <span>+</span>
+          </button>
+          <div class="faq-answer">
+            El software te lo dirá sin rodeos. Nuestro objetivo no es obligarte a armar un dron desde cero, sino evitar que gastes mal tu dinero. Si un modelo comercial cumple mejor tu objetivo, te indicaremos exactamente cuál comprar.
+          </div>
+        </div>
+
+        <div class="faq-item">
+          <button class="faq-question">
+            ¿Tengo que instalar algún programa en mi computadora?
+            <span>+</span>
+          </button>
+          <div class="faq-answer">
+            No. Es una aplicación web 100% en la nube; puedes usarla desde tu teléfono móvil, tablet o computadora inmediatamente después de activar tu acceso.
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- FOOTER -->
+  <footer>
+    <div class="container">
+      <p style="margin-bottom: 8px; color: #fff; font-weight: 600;">DronAdvisor AI — Un producto digital de @RadarDron</p>
+      <p>Guías de armado, comparativas reales y tecnología aérea sin rodeos. © 2026 Todos los derechos reservados.</p>
+    </div>
+  </footer>
+
+  <!-- MODAL DE COMPRA / CHECKOUT -->
+  <div class="modal-overlay" id="checkoutModal">
+    <div class="modal-box">
+      <button class="close-modal" onclick="closeCheckout()">×</button>
+      <div class="badge" style="margin-bottom: 12px;">ACTIVACIÓN INMEDIATA</div>
+      <h3 id="modalPlanTitle" style="margin-bottom: 8px;">Acceso Ilimitado Pro</h3>
+      <p style="font-size: 0.9rem; color: var(--text-muted); margin-bottom: 20px;">
+        Ingresa tu correo electrónico para recibir tu enlace de acceso personal y respaldo en PDF.
+      </p>
+      <form onsubmit="completeOrder(event)">
+        <div class="form-group">
+          <label for="buyerEmail">Correo Electrónico</label>
+          <input type="email" id="buyerEmail" class="form-control" placeholder="tu@correo.com" required />
+        </div>
+        <button type="submit" class="btn btn-primary" style="width: 100%; margin-top: 8px;">
+          Continuar al Pago Seguro 🔒
+        </button>
+      </form>
+      <p id="orderFeedback" style="margin-top: 14px; font-size: 0.88rem; color: var(--cyan-neon); display: none;"></p>
+    </div>
+  </div>
+
+  <script>
+    // 1. Lógica del Simulador Interactivo
+    function runDiagnostic() {
+      const budget = document.getElementById('budget').value;
+      const goal = document.getElementById('goal').value;
+      const tools = document.getElementById('tools').value;
+
+      const titleEl = document.getElementById('resTitle');
+      const descEl = document.getElementById('resDesc');
+      const droneCostEl = document.getElementById('resDroneCost');
+      const hiddenCostEl = document.getElementById('resHiddenCost');
+
+      if (goal === 'photo' || tools === 'no') {
+        titleEl.textContent = "Veredicto: Dron Comercial Listo para Volar (RTF)";
+        descEl.textContent = "Dado que priorizas estabilidad sin soldar componentes, un modelo comercial compacto (<250g) te dará sensores de seguridad, GPS y cámara estabilizada desde el minuto uno.";
+        droneCostEl.textContent = budget === 'low' ? "$199 USD" : (budget === 'mid' ? "$389 USD" : "$750 USD");
+        hiddenCostEl.textContent = budget === 'low' ? "$45 USD (MicroSD + Hélices)" : "$110 USD (Batería Extra + Filtro ND)";
+      } else if (budget === 'low' && goal === 'fpv') {
+        titleEl.textContent = "Veredicto: Kit TinyWhoop 75mm Brushless";
+        descEl.textContent = "Con menos de $250 USD, intentar armar un dron de 5 pulgadas dejaría fuera el radio y las gafas. Un TinyWhoop te permite entrenar en interiores y exteriores sin romper piezas caras.";
+        droneCostEl.textContent = "$115 USD";
+        hiddenCostEl.textContent = "$125 USD (Radio ELRS + Gafas + 4 LiPos 1S)";
+      } else {
+        titleEl.textContent = "Veredicto: Armado Custom 3.5\" o 5\" Freestyle/Cine";
+        descEl.textContent = "Tu presupuesto y herramientas permiten ensamblar un equipo modular con controladora F405, motores brushless y receptor ELRS. Tendrás máxima potencia y reparaciones económicas.";
+        droneCostEl.textContent = budget === 'mid' ? "$260 USD" : "$420 USD";
+        hiddenCostEl.textContent = budget === 'mid' ? "$190 USD (Cargador + LiPos + Gafas)" : "$310 USD (Sistema Digital + Cargador Dual)";
+      }
+    }
+
+    // 2. Lógica del Acordeón FAQ
+    document.querySelectorAll('.faq-question').forEach(btn => {
+      btn.addEventListener('click', () => {
+        const item = btn.parentElement;
+        item.classList.toggle('active');
+      });
+    });
+
+    // 3. Lógica del Modal de Checkout
+    const modal = document.getElementById('checkoutModal');
+    const modalTitle = document.getElementById('modalPlanTitle');
+    const feedback = document.getElementById('orderFeedback');
+
+    function openCheckout(planName) {
+      modalTitle.textContent = planName;
+      feedback.style.display = 'none';
+      modal.classList.add('open');
+    }
+
+    function closeCheckout() {
+      modal.classList.remove('open');
+    }
+
+    function completeOrder(e) {
+      e.preventDefault();
+      const email = document.getElementById('buyerEmail').value;
+      feedback.textContent = `✓ ¡Listo! Redirigiendo a la pasarela de pago para ${email}... (Conecta aquí tu enlace de Stripe, PayPal o Lemon Squeezy).`;
+      feedback.style.display = 'block';
+    }
+
+    // Cerrar modal al hacer clic fuera
+    modal.addEventListener('click', (e) => {
+      if (e.target === modal) closeCheckout();
+    });
+  </script>
+</body>
+</html>
