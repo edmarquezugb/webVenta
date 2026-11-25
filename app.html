@@ -1,0 +1,448 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Plataforma de Gestión | Drones y Cotizaciones — @RadarDron</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #140538;
+      --purple-deep: #3A0CA3;
+      --blue-electric: #4361EE;
+      --cyan-neon: #4CC9F0;
+      --magenta-pop: #FF007F;
+      --text-light: #F8FAFC;
+      --text-muted: #CBD5E1;
+      --surface: rgba(25, 7, 68, 0.9);
+      --border-soft: rgba(76, 201, 240, 0.26);
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg-dark);
+      background-image:
+        radial-gradient(circle at 12% 15%, rgba(67, 97, 238, 0.25) 0%, transparent 45%),
+        radial-gradient(circle at 88% 25%, rgba(255, 0, 127, 0.15) 0%, transparent 45%),
+        linear-gradient(180deg, #1b064d 0%, #0d0224 100%);
+      color: var(--text-light);
+      min-height: 100vh;
+      line-height: 1.55;
+    }
+
+    h1, h2, h3, .brand-font { font-family: 'Space Grotesk', sans-serif; }
+
+    .container {
+      max-width: 1140px;
+      margin: 0 auto;
+      padding: 26px 20px 64px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 14px;
+      padding-bottom: 18px;
+      margin-bottom: 24px;
+      border-bottom: 1px solid rgba(76, 201, 240, 0.16);
+    }
+
+    .brand {
+      color: #fff;
+      text-decoration: none;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 1.15rem;
+    }
+
+    .brand span { color: var(--cyan-neon); }
+
+    .user-controls {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      flex-wrap: wrap;
+      font-size: 0.86rem;
+    }
+
+    .pill {
+      background: rgba(76, 201, 240, 0.14);
+      border: 1px solid var(--cyan-neon);
+      color: var(--cyan-neon);
+      padding: 5px 12px;
+      border-radius: 999px;
+      font-weight: 700;
+    }
+
+    .btn-logout {
+      background: rgba(255, 0, 127, 0.16);
+      border: 1px solid var(--magenta-pop);
+      color: #ff80c0;
+      padding: 6px 14px;
+      border-radius: 9px;
+      font-weight: 600;
+      cursor: pointer;
+    }
+
+    .hero-bar {
+      background: var(--surface);
+      border: 1px solid var(--border-soft);
+      border-radius: 18px;
+      padding: 22px 26px;
+      margin-bottom: 24px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 16px;
+    }
+
+    .hero-bar h1 { font-size: clamp(1.5rem, 3vw, 2.05rem); }
+    .hero-bar h1 span { color: var(--cyan-neon); }
+
+    .stats-strip {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(210px, 1fr));
+      gap: 16px;
+      margin-bottom: 24px;
+    }
+
+    .stat-card {
+      background: var(--surface);
+      border: 1px solid var(--border-soft);
+      border-radius: 14px;
+      padding: 18px;
+    }
+
+    .stat-num {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.7rem;
+      font-weight: 700;
+      color: var(--cyan-neon);
+    }
+
+    .main-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 24px;
+      align-items: start;
+    }
+
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--border-soft);
+      border-radius: 18px;
+      padding: 24px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.42);
+    }
+
+    .panel h2 {
+      font-size: 1.2rem;
+      color: var(--cyan-neon);
+      margin-bottom: 14px;
+    }
+
+    .form-row {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+    }
+
+    .form-group { margin-bottom: 12px; }
+
+    label {
+      display: block;
+      font-size: 0.82rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 5px;
+    }
+
+    .control {
+      width: 100%;
+      padding: 10px 12px;
+      border-radius: 10px;
+      background: rgba(13, 2, 36, 0.9);
+      border: 1px solid rgba(76, 201, 240, 0.3);
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.9rem;
+    }
+
+    .btn-add {
+      width: 100%;
+      padding: 12px 16px;
+      border: none;
+      border-radius: 10px;
+      background: linear-gradient(135deg, var(--magenta-pop), #d4006a);
+      color: #fff;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      cursor: pointer;
+      margin-top: 4px;
+    }
+
+    .item-list {
+      list-style: none;
+      margin-top: 16px;
+    }
+
+    .item-card {
+      background: rgba(13, 2, 36, 0.8);
+      border: 1px solid rgba(76, 201, 240, 0.2);
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin-bottom: 10px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .item-meta {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      margin-top: 2px;
+    }
+
+    .btn-del {
+      background: none;
+      border: 1px solid rgba(255, 77, 141, 0.5);
+      color: #ff7ab8;
+      padding: 5px 10px;
+      border-radius: 8px;
+      font-size: 0.78rem;
+      cursor: pointer;
+    }
+
+    @media (max-width: 900px) {
+      .main-grid, .form-row { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="topbar">
+      <a href="index.html" class="brand">DronAdvisor <span>AI</span> · Plataforma de Gestión</a>
+      <div class="user-controls">
+        <span class="pill" id="planPill">Plan Activo</span>
+        <span id="userEmailLabel" style="color: var(--text-muted);">usuario@correo.com</span>
+        <button type="button" class="btn-logout" id="logoutBtn">Cerrar sesión</button>
+      </div>
+    </header>
+
+    <section class="hero-bar">
+      <div>
+        <h1>Hola, <span id="userNameLabel">Piloto</span> — Panel de Drones y Cotizaciones</h1>
+        <p style="color: var(--text-muted); font-size: 0.92rem;">
+          Administra tus drones (comerciales o armados desde cero) y lleva el control de tus cotizaciones de piezas.
+        </p>
+      </div>
+      <div style="font-size: 0.84rem; color: var(--cyan-neon);" id="orderLabel">Orden: #RD-SIMULADO</div>
+    </section>
+
+    <section class="stats-strip">
+      <div class="stat-card">
+        <div style="font-size: 0.82rem; color: var(--text-muted);">Drones registrados</div>
+        <div class="stat-num" id="statDrones">0</div>
+      </div>
+      <div class="stat-card">
+        <div style="font-size: 0.82rem; color: var(--text-muted);">Cotizaciones activas</div>
+        <div class="stat-num" id="statQuotes">0</div>
+      </div>
+      <div class="stat-card">
+        <div style="font-size: 0.82rem; color: var(--text-muted);">Total cotizado (USD)</div>
+        <div class="stat-num" style="color: var(--magenta-pop);" id="statTotalUsd">$0.00</div>
+      </div>
+    </section>
+
+    <div class="main-grid">
+      <section class="panel">
+        <h2>Mis Drones (Comerciales y Custom)</h2>
+        <form id="droneForm">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="droneName">Nombre / Modelo del Dron</label>
+              <input type="text" id="droneName" class="control" placeholder="Ej. Cinewhoop 3.5&quot; ELRS" required />
+            </div>
+            <div class="form-group">
+              <label for="droneType">Tipo</label>
+              <select id="droneType" class="control">
+                <option value="Armado desde cero (Custom)">Armado desde cero (Custom)</option>
+                <option value="Comercial listo para volar">Comercial listo para volar</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="droneWeight">Categoría de peso</label>
+              <select id="droneWeight" class="control">
+                <option value="Sub-250g">Sub-250g</option>
+                <option value="250g - 900g">250g - 900g</option>
+                <option value="+900g">+900g</option>
+              </select>
+            </div>
+            <div class="form-group">
+              <label for="droneStatus">Estado</label>
+              <select id="droneStatus" class="control">
+                <option value="En armado">En armado</option>
+                <option value="Listo para volar">Listo para volar</option>
+                <option value="Mantenimiento / Piezas">Mantenimiento / Piezas</option>
+              </select>
+            </div>
+          </div>
+
+          <button type="submit" class="btn-add">+ Agregar Dron a Mi Hangar</button>
+        </form>
+
+        <ul class="item-list" id="droneList"></ul>
+      </section>
+
+      <section class="panel">
+        <h2>Mis Cotizaciones de Piezas y Equipos</h2>
+        <form id="quoteForm">
+          <div class="form-row">
+            <div class="form-group">
+              <label for="quoteTitle">Título de la Cotización</label>
+              <input type="text" id="quoteTitle" class="control" placeholder="Ej. Stack F405 + 4 Motores 2207" required />
+            </div>
+            <div class="form-group">
+              <label for="quoteStore">Proveedor / Tienda</label>
+              <input type="text" id="quoteStore" class="control" placeholder="Ej. AliExpress / Amazon" required />
+            </div>
+          </div>
+
+          <div class="form-row">
+            <div class="form-group">
+              <label for="quoteAmount">Monto Estimado (USD)</label>
+              <input type="number" id="quoteAmount" class="control" step="0.01" min="1" placeholder="145.00" required />
+            </div>
+            <div class="form-group">
+              <label for="quoteCompat">Compatibilidad</label>
+              <select id="quoteCompat" class="control">
+                <option value="Validada (6S / ELRS)">Validada (6S / ELRS)</option>
+                <option value="Revisar voltaje / tamaño">Revisar voltaje / tamaño</option>
+              </select>
+            </div>
+          </div>
+
+          <button type="submit" class="btn-add">+ Guardar Cotización</button>
+        </form>
+
+        <ul class="item-list" id="quoteList"></ul>
+      </section>
+    </div>
+  </div>
+
+  <script>
+    const session = JSON.parse(localStorage.getItem('radarDronSession') || 'null');
+    if (!session) {
+      window.location.href = 'login.html';
+    } else {
+      document.getElementById('planPill').textContent = session.planName || 'Plan Activo';
+      document.getElementById('userEmailLabel').textContent = session.email || '';
+      document.getElementById('userNameLabel').textContent = session.userName || 'Piloto';
+      document.getElementById('orderLabel').textContent = `Orden: #${session.orderId || 'RD-SIMULADO'}`;
+    }
+
+    document.getElementById('logoutBtn').addEventListener('click', () => {
+      localStorage.removeItem('radarDronSession');
+      window.location.href = 'login.html?tab=login';
+    });
+
+    const storageKey = `radarDronPlatform_${(session && session.email) || 'default'}`;
+    const defaultData = {
+      drones: [
+        { id: 1, name: 'FPV 3.5" Freestyle', type: 'Armado desde cero (Custom)', weight: 'Sub-250g', status: 'En armado' }
+      ],
+      quotes: [
+        { id: 1, title: 'Controladora F405 + ESC 55A + 4 LiPos 4S', store: 'AliExpress Oficial', amount: 185, compat: 'Validada (6S / ELRS)' }
+      ]
+    };
+
+    let platformData = JSON.parse(localStorage.getItem(storageKey) || 'null') || defaultData;
+
+    function saveData() {
+      localStorage.setItem(storageKey, JSON.stringify(platformData));
+      renderAll();
+    }
+
+    function renderAll() {
+      const droneList = document.getElementById('droneList');
+      const quoteList = document.getElementById('quoteList');
+
+      droneList.innerHTML = platformData.drones.map(d => `
+        <li class="item-card">
+          <div>
+            <strong>${d.name}</strong>
+            <div class="item-meta">${d.type} · ${d.weight} · <strong>${d.status}</strong></div>
+          </div>
+          <button type="button" class="btn-del" onclick="deleteDrone(${d.id})">Eliminar</button>
+        </li>
+      `).join('') || '<p style="color: var(--text-muted); font-size: 0.88rem;">Aún no has registrado drones.</p>';
+
+      quoteList.innerHTML = platformData.quotes.map(q => `
+        <li class="item-card">
+          <div>
+            <strong>${q.title} — <span style="color: var(--cyan-neon);">$${Number(q.amount).toFixed(2)} USD</span></strong>
+            <div class="item-meta">${q.store} · ${q.compat}</div>
+          </div>
+          <button type="button" class="btn-del" onclick="deleteQuote(${q.id})">Eliminar</button>
+        </li>
+      `).join('') || '<p style="color: var(--text-muted); font-size: 0.88rem;">Aún no has creado cotizaciones.</p>';
+
+      const totalQuotesUsd = platformData.quotes.reduce((acc, item) => acc + Number(item.amount || 0), 0);
+      document.getElementById('statDrones').textContent = platformData.drones.length;
+      document.getElementById('statQuotes').textContent = platformData.quotes.length;
+      document.getElementById('statTotalUsd').textContent = `$${totalQuotesUsd.toFixed(2)}`;
+    }
+
+    document.getElementById('droneForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const name = document.getElementById('droneName').value.trim();
+      const type = document.getElementById('droneType').value;
+      const weight = document.getElementById('droneWeight').value;
+      const status = document.getElementById('droneStatus').value;
+      if (!name) return;
+
+      platformData.drones.unshift({ id: Date.now(), name, type, weight, status });
+      document.getElementById('droneName').value = '';
+      saveData();
+    });
+
+    document.getElementById('quoteForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const title = document.getElementById('quoteTitle').value.trim();
+      const store = document.getElementById('quoteStore').value.trim();
+      const amount = parseFloat(document.getElementById('quoteAmount').value);
+      const compat = document.getElementById('quoteCompat').value;
+      if (!title || !store || isNaN(amount) || amount <= 0) return;
+
+      platformData.quotes.unshift({ id: Date.now(), title, store, amount, compat });
+      document.getElementById('quoteTitle').value = '';
+      document.getElementById('quoteStore').value = '';
+      document.getElementById('quoteAmount').value = '';
+      saveData();
+    });
+
+    function deleteDrone(id) {
+      platformData.drones = platformData.drones.filter(d => d.id !== id);
+      saveData();
+    }
+
+    function deleteQuote(id) {
+      platformData.quotes = platformData.quotes.filter(q => q.id !== id);
+      saveData();
+    }
+
+    renderAll();
+  </script>
+</body>
+</html>

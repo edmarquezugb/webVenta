@@ -1,0 +1,426 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Crear Cuenta / Iniciar Sesión | Hangar & Cotizaciones — @RadarDron</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #140538;
+      --purple-deep: #3A0CA3;
+      --blue-electric: #4361EE;
+      --cyan-neon: #4CC9F0;
+      --magenta-pop: #FF007F;
+      --text-light: #F8FAFC;
+      --text-muted: #CBD5E1;
+      --surface: rgba(25, 7, 68, 0.9);
+      --border-soft: rgba(76, 201, 240, 0.28);
+      --error: #FF4D8D;
+    }
+
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg-dark);
+      background-image:
+        radial-gradient(circle at 15% 18%, rgba(67, 97, 238, 0.28) 0%, transparent 45%),
+        radial-gradient(circle at 85% 28%, rgba(255, 0, 127, 0.16) 0%, transparent 45%),
+        linear-gradient(180deg, #1b064d 0%, #0d0224 100%);
+      color: var(--text-light);
+      min-height: 100vh;
+      line-height: 1.55;
+    }
+
+    h1, h2, h3, .brand-font { font-family: 'Space Grotesk', sans-serif; }
+
+    .container {
+      max-width: 1040px;
+      margin: 0 auto;
+      padding: 28px 20px 60px;
+    }
+
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      padding-bottom: 20px;
+      margin-bottom: 30px;
+      border-bottom: 1px solid rgba(76, 201, 240, 0.16);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: #fff;
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 1.15rem;
+    }
+
+    .brand span { color: var(--cyan-neon); }
+
+    .grid {
+      display: grid;
+      grid-template-columns: 1.08fr 0.92fr;
+      gap: 28px;
+      align-items: start;
+    }
+
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--border-soft);
+      border-radius: 18px;
+      padding: 28px;
+      box-shadow: 0 22px 55px rgba(0, 0, 0, 0.5);
+    }
+
+    .badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(76, 201, 240, 0.13);
+      border: 1px solid var(--cyan-neon);
+      color: var(--cyan-neon);
+      padding: 5px 14px;
+      border-radius: 999px;
+      font-size: 0.78rem;
+      font-weight: 700;
+      margin-bottom: 14px;
+    }
+
+    h1 {
+      font-size: clamp(1.7rem, 3vw, 2.25rem);
+      line-height: 1.15;
+      margin-bottom: 8px;
+    }
+
+    h1 span { color: var(--cyan-neon); }
+
+    .lead {
+      color: var(--text-muted);
+      font-size: 0.94rem;
+      margin-bottom: 18px;
+    }
+
+    .purchase-pill {
+      background: rgba(67, 97, 238, 0.18);
+      border: 1px solid rgba(76, 201, 240, 0.35);
+      border-radius: 12px;
+      padding: 12px 14px;
+      margin-bottom: 20px;
+      font-size: 0.86rem;
+    }
+
+    .purchase-pill strong { color: var(--cyan-neon); }
+
+    .tabs {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 10px;
+      margin-bottom: 20px;
+    }
+
+    .tab-btn {
+      padding: 11px 14px;
+      border-radius: 10px;
+      border: 1px solid rgba(76, 201, 240, 0.28);
+      background: rgba(13, 2, 36, 0.75);
+      color: var(--text-muted);
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 0.92rem;
+      cursor: pointer;
+    }
+
+    .tab-btn.active {
+      background: rgba(58, 12, 163, 0.75);
+      border-color: var(--magenta-pop);
+      color: #fff;
+    }
+
+    .form-group { margin-bottom: 14px; }
+
+    label {
+      display: block;
+      font-size: 0.84rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    .input-field {
+      width: 100%;
+      padding: 11px 13px;
+      border-radius: 10px;
+      background: rgba(13, 2, 36, 0.9);
+      border: 1px solid rgba(76, 201, 240, 0.3);
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.94rem;
+    }
+
+    .input-field:focus {
+      outline: none;
+      border-color: var(--cyan-neon);
+    }
+
+    .input-field.invalid { border-color: var(--error); }
+
+    .error-msg {
+      color: var(--error);
+      font-size: 0.78rem;
+      margin-top: 4px;
+      min-height: 15px;
+    }
+
+    .btn-submit {
+      width: 100%;
+      padding: 14px 20px;
+      border: none;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--magenta-pop), #d4006a);
+      color: #fff;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.02rem;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 10px 26px rgba(255, 0, 127, 0.38);
+      margin-top: 6px;
+    }
+
+    .info-card {
+      background: rgba(13, 2, 36, 0.8);
+      border: 1px solid rgba(67, 97, 238, 0.4);
+      border-radius: 14px;
+      padding: 18px;
+      margin-bottom: 14px;
+    }
+
+    .info-list {
+      list-style: none;
+      margin-top: 10px;
+    }
+
+    .info-list li {
+      padding: 9px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      font-size: 0.9rem;
+      color: var(--text-muted);
+    }
+
+    .info-list li strong {
+      color: var(--cyan-neon);
+      display: block;
+    }
+
+    @media (max-width: 860px) {
+      .grid { grid-template-columns: 1fr; }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="topbar">
+      <a href="index.html" class="brand">DronAdvisor <span>AI</span> · @RadarDron</a>
+      <a href="success.html" style="color: var(--cyan-neon); text-decoration: none; font-size: 0.9rem;">← Ver recibo de pago</a>
+    </header>
+
+    <div class="grid">
+      <section class="panel">
+        <div class="badge">PASO POST-COMPRA · ACCESO A PLATAFORMA</div>
+        <h1>Configura tu cuenta y entra a tu <span>Hangar</span></h1>
+        <p class="lead">
+          Tu pago ya fue registrado. Crea tu usuario para administrar tus drones, cotizaciones y piezas, o inicia sesión si ya tienes cuenta.
+        </p>
+
+        <div class="purchase-pill">
+          Compra vinculada: <strong id="linkedPlan">Acceso Ilimitado Pro</strong> · Orden <strong id="linkedOrder">#RD-SIMULADO</strong>
+        </div>
+
+        <div class="tabs">
+          <button type="button" class="tab-btn active" id="tabRegister" onclick="switchTab('register')">1. Crear Usuario</button>
+          <button type="button" class="tab-btn" id="tabLogin" onclick="switchTab('login')">2. Ya Tengo Cuenta</button>
+        </div>
+
+        <form id="registerForm" novalidate>
+          <div class="form-group">
+            <label for="regName">Nombre de Usuario o Piloto *</label>
+            <input type="text" id="regName" class="input-field" placeholder="Ej. Mateo FPV" required />
+            <div class="error-msg" id="errRegName"></div>
+          </div>
+
+          <div class="form-group">
+            <label for="regEmail">Correo Electrónico *</label>
+            <input type="email" id="regEmail" class="input-field" placeholder="tu@correo.com" required />
+            <div class="error-msg" id="errRegEmail"></div>
+          </div>
+
+          <div class="form-group">
+            <label for="regPassword">Crear Contraseña (mín. 6 caracteres) *</label>
+            <input type="password" id="regPassword" class="input-field" placeholder="Crea tu contraseña" required />
+            <div class="error-msg" id="errRegPass"></div>
+          </div>
+
+          <button type="submit" class="btn-submit">Crear Usuario e Ir a Mi Plataforma →</button>
+        </form>
+
+        <form id="loginForm" style="display: none;" novalidate>
+          <div class="form-group">
+            <label for="logEmail">Correo Electrónico *</label>
+            <input type="email" id="logEmail" class="input-field" placeholder="tu@correo.com" required />
+            <div class="error-msg" id="errLogEmail"></div>
+          </div>
+
+          <div class="form-group">
+            <label for="logPassword">Contraseña *</label>
+            <input type="password" id="logPassword" class="input-field" placeholder="Tu contraseña" required />
+            <div class="error-msg" id="errLogPass"></div>
+          </div>
+
+          <button type="submit" class="btn-submit">Iniciar Sesión en Mi Plataforma →</button>
+        </form>
+      </section>
+
+      <aside class="panel">
+        <div class="info-card">
+          <span style="font-size: 0.78rem; color: var(--cyan-neon); font-weight: 700;">PLATAFORMA DE GESTIÓN</span>
+          <h3 style="margin-top: 4px; margin-bottom: 6px;">¿Qué administrarás al entrar?</h3>
+          <p style="font-size: 0.88rem; color: var(--text-muted);">
+            Después de crear tu usuario e iniciar sesión entrarás a tu panel personal para gestionar lo que compraste:
+          </p>
+        </div>
+
+        <ul class="info-list">
+          <li>
+            <strong>Mis Drones (Hangar)</strong>
+            Registra tus drones comerciales o armados desde cero, estado de vuelo y revisiones.
+          </li>
+          <li>
+            <strong>Mis Cotizaciones y Presupuestos</strong>
+            Crea cotizaciones de piezas, compara precios de componentes y controla costos ocultos.
+          </li>
+          <li>
+            <strong>Inventario de Piezas y Baterías</strong>
+            Lleva control de motores, stacks, hélices de repuesto y ciclos de baterías LiPo.
+          </li>
+        </ul>
+      </aside>
+    </div>
+  </div>
+
+  <script>
+    const lastOrder = JSON.parse(localStorage.getItem('radarDronLastOrder') || 'null');
+    const preCheckout = JSON.parse(localStorage.getItem('radarDronPreCheckout') || 'null');
+    const registeredUser = JSON.parse(localStorage.getItem('radarDronRegisteredUser') || 'null');
+
+    const defaultEmail =
+      (registeredUser && registeredUser.email) ||
+      (lastOrder && lastOrder.email) ||
+      (preCheckout && preCheckout.email) ||
+      '';
+
+    const defaultName =
+      (registeredUser && registeredUser.userName) ||
+      (lastOrder && lastOrder.customerName) ||
+      '';
+
+    const planName = (lastOrder && lastOrder.planName) || 'Acceso Ilimitado Pro';
+    const orderCode = (lastOrder && lastOrder.orderId) ? `#${lastOrder.orderId}` : '#RD-SIMULADO';
+
+    document.getElementById('linkedPlan').textContent = planName;
+    document.getElementById('linkedOrder').textContent = orderCode;
+    if (defaultEmail) {
+      document.getElementById('regEmail').value = defaultEmail;
+      document.getElementById('logEmail').value = defaultEmail;
+    }
+    if (defaultName) {
+      document.getElementById('regName').value = defaultName;
+    }
+
+    function switchTab(mode) {
+      const isReg = mode === 'register';
+      document.getElementById('tabRegister').classList.toggle('active', isReg);
+      document.getElementById('tabLogin').classList.toggle('active', !isReg);
+      document.getElementById('registerForm').style.display = isReg ? 'block' : 'none';
+      document.getElementById('loginForm').style.display = isReg ? 'none' : 'block';
+    }
+
+    const params = new URLSearchParams(window.location.search);
+    if (params.get('tab') === 'login') switchTab('login');
+
+    function enterPlatform(userName, email) {
+      const session = {
+        userName,
+        email,
+        planName,
+        orderId: orderCode.replace('#', ''),
+        loggedInAt: new Date().toLocaleString('es-ES')
+      };
+      localStorage.setItem('radarDronSession', JSON.stringify(session));
+      window.location.href = 'app.html';
+    }
+
+    document.getElementById('registerForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const nameEl = document.getElementById('regName');
+      const emailEl = document.getElementById('regEmail');
+      const passEl = document.getElementById('regPassword');
+
+      const name = nameEl.value.trim();
+      const email = emailEl.value.trim();
+      const pass = passEl.value.trim();
+
+      const okName = name.length >= 2;
+      const okEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+      const okPass = pass.length >= 6;
+
+      document.getElementById('errRegName').textContent = okName ? '' : 'Escribe tu nombre de usuario.';
+      document.getElementById('errRegEmail').textContent = okEmail ? '' : 'Ingresa un correo electrónico válido.';
+      document.getElementById('errRegPass').textContent = okPass ? '' : 'La contraseña debe tener al menos 6 caracteres.';
+
+      nameEl.classList.toggle('invalid', !okName);
+      emailEl.classList.toggle('invalid', !okEmail);
+      passEl.classList.toggle('invalid', !okPass);
+
+      if (!(okName && okEmail && okPass)) return;
+
+      localStorage.setItem('radarDronRegisteredUser', JSON.stringify({ userName: name, email, pass }));
+      enterPlatform(name, email);
+    });
+
+    document.getElementById('loginForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+      const emailEl = document.getElementById('logEmail');
+      const passEl = document.getElementById('logPassword');
+
+      const email = emailEl.value.trim();
+      const pass = passEl.value.trim();
+
+      const okEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email);
+      const okPass = pass.length >= 4;
+
+      document.getElementById('errLogEmail').textContent = okEmail ? '' : 'Ingresa tu correo registrado.';
+      document.getElementById('errLogPass').textContent = okPass ? '' : 'Ingresa tu contraseña.';
+
+      emailEl.classList.toggle('invalid', !okEmail);
+      passEl.classList.toggle('invalid', !okPass);
+
+      if (!(okEmail && okPass)) return;
+
+      const savedName =
+        (registeredUser && registeredUser.email.toLowerCase() === email.toLowerCase() && registeredUser.userName) ||
+        email.split('@')[0].replace(/[._-]+/g, ' ');
+
+      enterPlatform(savedName, email);
+    });
+  </script>
+</body>
+</html>

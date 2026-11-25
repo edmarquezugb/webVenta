@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Checkout Seguro | DronAdvisor AI — @RadarDron</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&family=Space+Grotesk:wght@600;700&display=swap" rel="stylesheet">
+  <style>
+    :root {
+      --bg-dark: #140538;
+      --purple-deep: #3A0CA3;
+      --blue-electric: #4361EE;
+      --cyan-neon: #4CC9F0;
+      --magenta-pop: #FF007F;
+      --text-light: #F8FAFC;
+      --text-muted: #CBD5E1;
+      --surface: rgba(25, 7, 68, 0.88);
+      --border-soft: rgba(76, 201, 240, 0.24);
+      --error: #FF4D8D;
+    }
+
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+
+    body {
+      font-family: 'Inter', sans-serif;
+      background-color: var(--bg-dark);
+      background-image:
+        radial-gradient(circle at 12% 18%, rgba(67, 97, 238, 0.28) 0%, transparent 45%),
+        radial-gradient(circle at 88% 25%, rgba(255, 0, 127, 0.16) 0%, transparent 45%),
+        linear-gradient(180deg, #1b064d 0%, #0d0224 100%);
+      color: var(--text-light);
+      min-height: 100vh;
+      line-height: 1.5;
+    }
+
+    h1, h2, h3, .brand-font {
+      font-family: 'Space Grotesk', sans-serif;
+    }
+
+    .container {
+      max-width: 1100px;
+      margin: 0 auto;
+      padding: 28px 20px 64px;
+    }
+
+    /* Topbar */
+    .topbar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 12px;
+      padding-bottom: 22px;
+      margin-bottom: 30px;
+      border-bottom: 1px solid rgba(76, 201, 240, 0.16);
+    }
+
+    .brand {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+      text-decoration: none;
+      color: #fff;
+    }
+
+    .brand-badge {
+      width: 38px;
+      height: 38px;
+      border-radius: 10px;
+      background: var(--purple-deep);
+      border: 2px solid var(--cyan-neon);
+      display: grid;
+      place-items: center;
+    }
+
+    .brand-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--magenta-pop);
+      box-shadow: 0 0 10px var(--magenta-pop);
+    }
+
+    .brand-name {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 1.2rem;
+    }
+
+    .brand-name span {
+      color: var(--cyan-neon);
+    }
+
+    .security-pill {
+      display: inline-flex;
+      align-items: center;
+      gap: 8px;
+      background: rgba(76, 201, 240, 0.12);
+      border: 1px solid rgba(76, 201, 240, 0.35);
+      color: var(--cyan-neon);
+      padding: 7px 14px;
+      border-radius: 999px;
+      font-size: 0.84rem;
+      font-weight: 600;
+    }
+
+    /* Layout Principal */
+    .checkout-grid {
+      display: grid;
+      grid-template-columns: 1.15fr 0.85fr;
+      gap: 28px;
+      align-items: start;
+    }
+
+    .panel {
+      background: var(--surface);
+      border: 1px solid var(--border-soft);
+      border-radius: 18px;
+      padding: 26px;
+      box-shadow: 0 20px 50px rgba(0, 0, 0, 0.45);
+    }
+
+    .section-title {
+      font-size: 1.15rem;
+      margin-bottom: 16px;
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
+    .step-num {
+      width: 26px;
+      height: 26px;
+      border-radius: 8px;
+      background: rgba(67, 97, 238, 0.28);
+      border: 1px solid var(--cyan-neon);
+      color: var(--cyan-neon);
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 0.85rem;
+      font-weight: 700;
+      display: grid;
+      place-items: center;
+    }
+
+    /* Selector de Planes */
+    .plans-list {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+      margin-bottom: 24px;
+    }
+
+    .plan-option {
+      border: 1.5px solid rgba(76, 201, 240, 0.25);
+      background: rgba(15, 3, 43, 0.72);
+      border-radius: 14px;
+      padding: 16px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      position: relative;
+    }
+
+    .plan-option:hover {
+      border-color: var(--cyan-neon);
+    }
+
+    .plan-option.active {
+      border-color: var(--magenta-pop);
+      background: rgba(58, 12, 163, 0.55);
+      box-shadow: 0 0 24px rgba(255, 0, 127, 0.2);
+    }
+
+    .plan-tag {
+      display: inline-block;
+      font-size: 0.72rem;
+      font-weight: 700;
+      text-transform: uppercase;
+      padding: 2px 8px;
+      border-radius: 6px;
+      background: rgba(76, 201, 240, 0.15);
+      color: var(--cyan-neon);
+      margin-bottom: 8px;
+    }
+
+    .plan-option.active .plan-tag {
+      background: var(--magenta-pop);
+      color: #fff;
+    }
+
+    .plan-title {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      margin-bottom: 4px;
+    }
+
+    .plan-price {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.55rem;
+      font-weight: 700;
+      color: var(--cyan-neon);
+    }
+
+    .plan-price small {
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      font-weight: 400;
+    }
+
+    .plan-desc {
+      font-size: 0.82rem;
+      color: var(--text-muted);
+      margin-top: 6px;
+    }
+
+    /* Tarjeta Virtual Interactiva */
+    .card-preview-box {
+      background: linear-gradient(135deg, var(--purple-deep) 0%, var(--blue-electric) 62%, #1b064d 100%);
+      border: 1px solid rgba(76, 201, 240, 0.55);
+      border-radius: 16px;
+      padding: 20px 22px;
+      margin-bottom: 20px;
+      position: relative;
+      overflow: hidden;
+      box-shadow: 0 14px 32px rgba(10, 2, 28, 0.65);
+    }
+
+    .card-preview-box::after {
+      content: "";
+      position: absolute;
+      width: 180px;
+      height: 180px;
+      border-radius: 50%;
+      background: rgba(255, 0, 127, 0.24);
+      right: -50px;
+      top: -50px;
+      pointer-events: none;
+    }
+
+    .card-top-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 22px;
+    }
+
+    .card-chip {
+      width: 38px;
+      height: 28px;
+      border-radius: 6px;
+      background: linear-gradient(135deg, #f8fafc, #94a3b8);
+      border: 1px solid rgba(255, 255, 255, 0.6);
+    }
+
+    .card-network {
+      font-family: 'Space Grotesk', sans-serif;
+      font-weight: 700;
+      font-size: 0.95rem;
+      letter-spacing: 1px;
+      color: var(--cyan-neon);
+      z-index: 1;
+    }
+
+    .card-number-display {
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.28rem;
+      letter-spacing: 2.5px;
+      margin-bottom: 18px;
+      color: #fff;
+      word-spacing: 4px;
+    }
+
+    .card-bottom-row {
+      display: flex;
+      justify-content: space-between;
+      font-size: 0.8rem;
+      color: rgba(248, 250, 252, 0.85);
+    }
+
+    .card-bottom-row strong {
+      display: block;
+      font-size: 0.92rem;
+      color: #fff;
+      margin-top: 2px;
+      text-transform: uppercase;
+    }
+
+    /* Campos del Formulario */
+    .form-row-2 {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 14px;
+    }
+
+    .form-row-3 {
+      display: grid;
+      grid-template-columns: 1.4fr 1fr 1fr;
+      gap: 12px;
+    }
+
+    .form-group {
+      margin-bottom: 14px;
+    }
+
+    label {
+      display: block;
+      font-size: 0.84rem;
+      font-weight: 600;
+      color: var(--text-muted);
+      margin-bottom: 6px;
+    }
+
+    .input-field {
+      width: 100%;
+      padding: 11px 13px;
+      border-radius: 10px;
+      background: rgba(13, 2, 36, 0.85);
+      border: 1px solid rgba(76, 201, 240, 0.3);
+      color: #fff;
+      font-family: 'Inter', sans-serif;
+      font-size: 0.94rem;
+      transition: border-color 0.2s ease;
+    }
+
+    .input-field:focus {
+      outline: none;
+      border-color: var(--cyan-neon);
+    }
+
+    .input-field.invalid {
+      border-color: var(--error);
+    }
+
+    .error-msg {
+      color: var(--error);
+      font-size: 0.78rem;
+      margin-top: 4px;
+      min-height: 16px;
+    }
+
+    /* Cupón */
+    .coupon-box {
+      display: flex;
+      gap: 10px;
+      margin: 14px 0 18px;
+    }
+
+    .btn-apply {
+      padding: 0 16px;
+      border-radius: 10px;
+      background: rgba(67, 97, 238, 0.25);
+      border: 1px solid var(--blue-electric);
+      color: var(--cyan-neon);
+      font-weight: 600;
+      cursor: pointer;
+      white-space: nowrap;
+    }
+
+    .btn-apply:hover {
+      background: var(--blue-electric);
+      color: #fff;
+    }
+
+    /* Resumen de Orden */
+    .summary-item {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 12px;
+      padding: 12px 0;
+      border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+      font-size: 0.92rem;
+    }
+
+    .summary-total {
+      display: flex;
+      justify-content: space-between;
+      align-items: baseline;
+      padding: 18px 0 12px;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.35rem;
+      font-weight: 700;
+    }
+
+    .summary-total .total-val {
+      color: var(--cyan-neon);
+      font-size: 1.6rem;
+    }
+
+    .perks-box {
+      background: rgba(13, 2, 36, 0.65);
+      border: 1px solid rgba(76, 201, 240, 0.2);
+      border-radius: 12px;
+      padding: 14px 16px;
+      margin: 14px 0 20px;
+      font-size: 0.86rem;
+      color: var(--text-muted);
+    }
+
+    .perks-box ul {
+      list-style: none;
+      margin-top: 8px;
+    }
+
+    .perks-box li {
+      margin-bottom: 6px;
+      display: flex;
+      gap: 8px;
+    }
+
+    .perks-box li::before {
+      content: "✓";
+      color: var(--cyan-neon);
+      font-weight: 700;
+    }
+
+    .btn-pay {
+      width: 100%;
+      padding: 15px 22px;
+      border: none;
+      border-radius: 12px;
+      background: linear-gradient(135deg, var(--magenta-pop), #d4006a);
+      color: #fff;
+      font-family: 'Space Grotesk', sans-serif;
+      font-size: 1.05rem;
+      font-weight: 700;
+      cursor: pointer;
+      box-shadow: 0 10px 28px rgba(255, 0, 127, 0.38);
+      transition: transform 0.2s ease, box-shadow 0.2s ease;
+    }
+
+    .btn-pay:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 14px 34px rgba(255, 0, 127, 0.55);
+    }
+
+    .guarantee-note {
+      margin-top: 14px;
+      font-size: 0.8rem;
+      color: var(--text-muted);
+      text-align: center;
+    }
+
+    .demo-banner {
+      margin-top: 14px;
+      padding: 10px 12px;
+      border-radius: 10px;
+      background: rgba(76, 201, 240, 0.09);
+      border: 1px dashed rgba(76, 201, 240, 0.4);
+      font-size: 0.78rem;
+      color: var(--cyan-neon);
+      text-align: center;
+    }
+
+    @media (max-width: 880px) {
+      .checkout-grid {
+        grid-template-columns: 1fr;
+      }
+      .plans-list, .form-row-2, .form-row-3 {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+</head>
+<body>
+  <div class="container">
+    <header class="topbar">
+      <a href="index.html" class="brand">
+        <div class="brand-badge"><div class="brand-dot"></div></div>
+        <div class="brand-name">DronAdvisor <span>AI</span> · @RadarDron</div>
+      </a>
+      <div class="security-pill">🔒 Conexión Encriptada TLS · Pago Simulado</div>
+    </header>
+
+    <form id="checkoutForm" class="checkout-grid" novalidate>
+      <!-- COLUMNA IZQUIERDA: PLAN + DATOS + TARJETA -->
+      <div>
+        <div class="panel" style="margin-bottom: 24px;">
+          <h2 class="section-title"><span class="step-num">1</span> Selecciona tu Plan del Software</h2>
+          <div class="plans-list">
+            <div class="plan-option" data-plan="basic" data-name="Pase Diagnóstico" data-price="9">
+              <span class="plan-tag">Esencial</span>
+              <div class="plan-title">Pase Diagnóstico</div>
+              <div class="plan-price">$9.00 <small>USD pago único</small></div>
+              <p class="plan-desc">3 diagnósticos IA, comparativa comercial vs. custom y exportación PDF.</p>
+            </div>
+
+            <div class="plan-option active" data-plan="pro" data-name="Acceso Ilimitado Pro" data-price="19">
+              <span class="plan-tag">Más Elegido</span>
+              <div class="plan-title">Acceso Ilimitado Pro</div>
+              <div class="plan-price">$19.00 <small>USD de por vida</small></div>
+              <p class="plan-desc">Diagnósticos ilimitados, enlaces 2026, guía soldadura y checklist LiPo.</p>
+            </div>
+          </div>
+
+          <h2 class="section-title"><span class="step-num">2</span> Datos del Comprador</h2>
+          <div class="form-row-2">
+            <div class="form-group">
+              <label for="firstName">Nombres *</label>
+              <input type="text" id="firstName" class="input-field" placeholder="Ej. Mateo Andrés" required />
+              <div class="error-msg" id="errFirstName"></div>
+            </div>
+            <div class="form-group">
+              <label for="lastName">Apellidos *</label>
+              <input type="text" id="lastName" class="input-field" placeholder="Ej. Gómez Flores" required />
+              <div class="error-msg" id="errLastName"></div>
+            </div>
+          </div>
+
+          <div class="form-row-2">
+            <div class="form-group">
+              <label for="email">Correo Electrónico (recibirás tu acceso) *</label>
+              <input type="email" id="email" class="input-field" placeholder="mateo@correo.com" required />
+              <div class="error-msg" id="errEmail"></div>
+            </div>
+            <div class="form-group">
+              <label for="country">País / Región *</label>
+              <select id="country" class="input-field">
+                <option value="El Salvador">El Salvador</option>
+                <option value="México">México</option>
+                <option value="Colombia">Colombia</option>
+                <option value="Guatemala">Guatemala</option>
+                <option value="Costa Rica">Costa Rica</option>
+                <option value="España">España</option>
+                <option value="Estados Unidos">Estados Unidos</option>
+                <option value="Otro">Otro país</option>
+              </select>
+            </div>
+          </div>
+        </div>
+
+        <div class="panel">
+          <h2 class="section-title"><span class="step-num">3</span> Datos de Tarjeta de Crédito o Débito</h2>
+
+          <!-- Tarjeta Visual -->
+          <div class="card-preview-box">
+            <div class="card-top-row">
+              <div class="card-chip"></div>
+              <div class="card-network" id="cardBrand">TARJETA</div>
+            </div>
+            <div class="card-number-display" id="cardNumberPreview">•••• •••• •••• ••••</div>
+            <div class="card-bottom-row">
+              <div>
+                <span>Titular</span>
+                <strong id="cardHolderPreview">NOMBRE DEL TITULAR</strong>
+              </div>
+              <div style="text-align: right;">
+                <span>Vence</span>
+                <strong id="cardExpiryPreview">MM/AA</strong>
+              </div>
+            </div>
+          </div>
+
+          <div class="form-group">
+            <label for="cardHolder">Nombre en la Tarjeta *</label>
+            <input type="text" id="cardHolder" class="input-field" placeholder="COMO APARECE EN LA TARJETA" required />
+            <div class="error-msg" id="errCardHolder"></div>
+          </div>
+
+          <div class="form-group">
+            <label for="cardNumber">Número de Tarjeta *</label>
+            <input type="text" id="cardNumber" class="input-field" inputmode="numeric" maxlength="19" placeholder="4532 8910 3344 7788" required />
+            <div class="error-msg" id="errCardNumber"></div>
+          </div>
+
+          <div class="form-row-3">
+            <div class="form-group">
+              <label for="cardExpiry">Fecha de Vencimiento *</label>
+              <input type="text" id="cardExpiry" class="input-field" inputmode="numeric" maxlength="5" placeholder="MM/AA" required />
+              <div class="error-msg" id="errCardExpiry"></div>
+            </div>
+            <div class="form-group">
+              <label for="cardCvv">CVV / CVC *</label>
+              <input type="password" id="cardCvv" class="input-field" inputmode="numeric" maxlength="4" placeholder="123" required />
+              <div class="error-msg" id="errCardCvv"></div>
+            </div>
+            <div class="form-group">
+              <label for="postalCode">Código Postal *</label>
+              <input type="text" id="postalCode" class="input-field" placeholder="3301" required />
+              <div class="error-msg" id="errPostalCode"></div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- COLUMNA DERECHA: RESUMEN DE COMPRA -->
+      <aside class="panel">
+        <h2 class="section-title">Resumen del Pedido</h2>
+
+        <div class="summary-item">
+          <div>
+            <strong id="summaryPlanName">Acceso Ilimitado Pro</strong>
+            <div style="font-size: 0.8rem; color: var(--text-muted);" id="summaryPlanSub">Licencia vitalicia · Sin cuotas mensuales</div>
+          </div>
+          <strong id="summaryBasePrice">$19.00</strong>
+        </div>
+
+        <div class="coupon-box">
+          <input type="text" id="couponInput" class="input-field" placeholder="Cupón (prueba RADAR20)" />
+          <button type="button" class="btn-apply" id="applyCouponBtn">Aplicar</button>
+        </div>
+        <div class="error-msg" id="couponMessage" style="margin-top: -10px; margin-bottom: 10px; color: var(--cyan-neon);"></div>
+
+        <div class="summary-item">
+          <span>Subtotal</span>
+          <span id="summarySubtotal">$19.00</span>
+        </div>
+        <div class="summary-item">
+          <span>Descuento</span>
+          <span id="summaryDiscount" style="color: var(--magenta-pop);">-$0.00</span>
+        </div>
+        <div class="summary-item">
+          <span>Impuestos / Procesamiento</span>
+          <span style="color: var(--cyan-neon);">$0.00</span>
+        </div>
+
+        <div class="summary-total">
+          <span>Total a pagar (USD)</span>
+          <span class="total-val" id="summaryTotal">$19.00</span>
+        </div>
+
+        <div class="perks-box">
+          <strong style="color: #fff;">Incluido con tu compra:</strong>
+          <ul id="summaryPerks">
+            <li>Diagnósticos ilimitados con DronAdvisor AI</li>
+            <li>Base de enlaces de piezas verificados (2026)</li>
+            <li>Guía PDF "Soldadura Segura y Primer Vuelo"</li>
+            <li>Checklist pre-vuelo y seguridad de baterías LiPo</li>
+          </ul>
+        </div>
+
+        <button type="submit" class="btn-pay">Completar Compra Segura →</button>
+
+        <p class="guarantee-note">
+          🛡️ Garantía de 7 días: si no te ayuda a definir tu dron sin errores, te devolvemos el 100%.
+        </p>
+        <div class="demo-banner">
+          Simulación educativa de pasarela de pago: no ingreses tarjetas reales. Al enviar, guardarás el recibo en tu navegador y abrirás <strong>success.html</strong>.
+        </div>
+      </aside>
+    </form>
+  </div>
+
+  <script>
+    const state = {
+      planId: 'pro',
+      planName: 'Acceso Ilimitado Pro',
+      basePrice: 19,
+      discountRate: 0,
+      couponCode: ''
+    };
+
+    const perksByPlan = {
+      basic: [
+        'Hasta 3 diagnósticos completos con DronAdvisor AI',
+        'Comparativa objetiva Armado Custom vs. Comercial',
+        'Calculadora de costos ocultos y exportación en PDF'
+      ],
+      pro: [
+        'Diagnósticos ilimitados para cualquier presupuesto',
+        'Base de enlaces de piezas verificados (2026)',
+        'Guía PDF "Soldadura Segura y Primer Vuelo"',
+        'Checklist pre-vuelo y seguridad de baterías LiPo'
+      ]
+    };
+
+    // Selección de planes
+    document.querySelectorAll('.plan-option').forEach(option => {
+      option.addEventListener('click', () => {
+        document.querySelectorAll('.plan-option').forEach(el => el.classList.remove('active'));
+        option.classList.add('active');
+
+        state.planId = option.dataset.plan;
+        state.planName = option.dataset.name;
+        state.basePrice = parseFloat(option.dataset.price);
+        updateSummary();
+      });
+    });
+
+    // Cupón de prueba
+    document.getElementById('applyCouponBtn').addEventListener('click', () => {
+      const code = document.getElementById('couponInput').value.trim().toUpperCase();
+      const msgEl = document.getElementById('couponMessage');
+
+      if (!code) {
+        state.discountRate = 0;
+        state.couponCode = '';
+        msgEl.style.color = 'var(--text-muted)';
+        msgEl.textContent = 'Ingresa un código de cupón.';
+      } else if (code === 'RADAR20' || code === 'DRON20') {
+        state.discountRate = 0.20;
+        state.couponCode = code;
+        msgEl.style.color = 'var(--cyan-neon)';
+        msgEl.textContent = `✓ Cupón ${code} aplicado: 20% de descuento.`;
+      } else {
+        state.discountRate = 0;
+        state.couponCode = '';
+        msgEl.style.color = 'var(--error)';
+        msgEl.textContent = 'Cupón no válido. Prueba con RADAR20.';
+      }
+      updateSummary();
+    });
+
+    function updateSummary() {
+      const discountAmount = state.basePrice * state.discountRate;
+      const totalAmount = Math.max(0, state.basePrice - discountAmount);
+
+      document.getElementById('summaryPlanName').textContent = state.planName;
+      document.getElementById('summaryPlanSub').textContent =
+        state.planId === 'pro' ? 'Licencia vitalicia · Sin cuotas mensuales' : 'Pase de 3 diagnósticos · Pago único';
+      document.getElementById('summaryBasePrice').textContent = `$${state.basePrice.toFixed(2)}`;
+      document.getElementById('summarySubtotal').textContent = `$${state.basePrice.toFixed(2)}`;
+      document.getElementById('summaryDiscount').textContent = `-$${discountAmount.toFixed(2)}`;
+      document.getElementById('summaryTotal').textContent = `$${totalAmount.toFixed(2)}`;
+
+      const perksUl = document.getElementById('summaryPerks');
+      perksUl.innerHTML = perksByPlan[state.planId].map(item => `<li>${item}</li>`).join('');
+    }
+
+    // Actualización en vivo de la tarjeta
+    const cardNumberInput = document.getElementById('cardNumber');
+    const cardHolderInput = document.getElementById('cardHolder');
+    const cardExpiryInput = document.getElementById('cardExpiry');
+
+    cardNumberInput.addEventListener('input', (e) => {
+      let digits = e.target.value.replace(/\D/g, '').slice(0, 16);
+      let formatted = digits.replace(/(\d{4})(?=\d)/g, '$1 ');
+      e.target.value = formatted;
+
+      document.getElementById('cardNumberPreview').textContent =
+        formatted ? formatted.padEnd(19, '•') : '•••• •••• •••• ••••';
+
+      const brandEl = document.getElementById('cardBrand');
+      if (digits.startsWith('4')) brandEl.textContent = 'VISA';
+      else if (/^5[1-5]/.test(digits) || /^2[2-7]/.test(digits)) brandEl.textContent = 'MASTERCARD';
+      else if (/^3[47]/.test(digits)) brandEl.textContent = 'AMEX';
+      else brandEl.textContent = 'TARJETA';
+    });
+
+    cardHolderInput.addEventListener('input', (e) => {
+      const val = e.target.value.trim();
+      document.getElementById('cardHolderPreview').textContent = val ? val : 'NOMBRE DEL TITULAR';
+    });
+
+    cardExpiryInput.addEventListener('input', (e) => {
+      let clean = e.target.value.replace(/\D/g, '').slice(0, 4);
+      if (clean.length >= 3) {
+        clean = `${clean.slice(0, 2)}/${clean.slice(2)}`;
+      }
+      e.target.value = clean;
+      document.getElementById('cardExpiryPreview').textContent = clean || 'MM/AA';
+    });
+
+    document.getElementById('cardCvv').addEventListener('input', (e) => {
+      e.target.value = e.target.value.replace(/\D/g, '').slice(0, 4);
+    });
+
+    // Validación Luhn para simulación de tarjeta
+    function passesLuhn(numStr) {
+      const digits = numStr.replace(/\D/g, '');
+      if (digits.length < 13) return false;
+      let sum = 0;
+      let shouldDouble = false;
+      for (let i = digits.length - 1; i >= 0; i--) {
+        let d = parseInt(digits[i], 10);
+        if (shouldDouble) {
+          d *= 2;
+          if (d > 9) d -= 9;
+        }
+        sum += d;
+        shouldDouble = !shouldDouble;
+      }
+      return sum % 10 === 0;
+    }
+
+    function setFieldError(inputId, errId, message) {
+      const input = document.getElementById(inputId);
+      const err = document.getElementById(errId);
+      if (message) {
+        input.classList.add('invalid');
+        err.textContent = message;
+        return false;
+      } else {
+        input.classList.remove('invalid');
+        err.textContent = '';
+        return true;
+      }
+    }
+
+    document.getElementById('checkoutForm').addEventListener('submit', (e) => {
+      e.preventDefault();
+
+      const firstName = document.getElementById('firstName').value.trim();
+      const lastName = document.getElementById('lastName').value.trim();
+      const email = document.getElementById('email').value.trim();
+      const country = document.getElementById('country').value;
+      const cardHolder = document.getElementById('cardHolder').value.trim();
+      const cardNumber = document.getElementById('cardNumber').value.trim();
+      const cardExpiry = document.getElementById('cardExpiry').value.trim();
+      const cardCvv = document.getElementById('cardCvv').value.trim();
+      const postalCode = document.getElementById('postalCode').value.trim();
+
+      const v1 = setFieldError('firstName', 'errFirstName', firstName ? '' : 'Ingresa tus nombres.');
+      const v2 = setFieldError('lastName', 'errLastName', lastName ? '' : 'Ingresa tus apellidos.');
+      const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+      const v3 = setFieldError('email', 'errEmail', emailRegex.test(email) ? '' : 'Ingresa un correo válido.');
+
+      const v4 = setFieldError('cardHolder', 'errCardHolder', cardHolder.length >= 3 ? '' : 'Indica el nombre del titular.');
+      const v5 = setFieldError('cardNumber', 'errCardNumber', passesLuhn(cardNumber) ? '' : 'Número de tarjeta inválido.');
+
+      const expParts = cardExpiry.split('/');
+      const month = parseInt(expParts[0], 10);
+      const validExpiry = expParts.length === 2 && expParts[0].length === 2 && expParts[1].length === 2 && month >= 1 && month <= 12;
+      const v6 = setFieldError('cardExpiry', 'errCardExpiry', validExpiry ? '' : 'Usa formato MM/AA (ej. 08/28).');
+
+      const v7 = setFieldError('cardCvv', 'errCardCvv', cardCvv.length >= 3 ? '' : 'CVV de 3 o 4 dígitos.');
+      const v8 = setFieldError('postalCode', 'errPostalCode', postalCode.length >= 3 ? '' : 'Ingresa el código postal.');
+
+      if (!(v1 && v2 && v3 && v4 && v5 && v6 && v7 && v8)) {
+        return;
+      }
+
+      const discountAmount = state.basePrice * state.discountRate;
+      const totalAmount = Math.max(0, state.basePrice - discountAmount);
+      const last4 = cardNumber.replace(/\D/g, '').slice(-4);
+      const orderId = 'RD-' + Math.floor(100000 + Math.random() * 900000);
+
+      const orderData = {
+        orderId,
+        date: new Date().toLocaleString('es-ES'),
+        customerName: `${firstName} ${lastName}`,
+        email,
+        country,
+        planId: state.planId,
+        planName: state.planName,
+        basePrice: state.basePrice.toFixed(2),
+        discount: discountAmount.toFixed(2),
+        total: totalAmount.toFixed(2),
+        couponCode: state.couponCode || 'Ninguno',
+        cardLast4: last4,
+        cardBrand: document.getElementById('cardBrand').textContent
+      };
+
+      localStorage.setItem('radarDronLastOrder', JSON.stringify(orderData));
+      window.location.href = 'success.html';
+    });
+
+    updateSummary();
+  </script>
+</body>
+</html>
